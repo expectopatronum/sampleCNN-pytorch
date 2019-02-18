@@ -5,6 +5,16 @@ Pytorch implementation of [Sample-level Deep Convolutional Neural Networks for M
 [MagnaTagATune Dataset](http://mirg.city.ac.uk/codeapps/the-magnatagatune-dataset)
 * Used tag annotations and audio data
 
+How to unzip the data (found at [keunwoochoi/magnatagatune-list](https://github.com/keunwoochoi/magnatagatune-list)):
+
+After downloading the three files, 
+
+`cat mp3.zip.* > mp3_all.zip` to merge them, then unzip it by 
+
+`unzip mp3_all.zip`
+
+You get 16 folders, '0' to '9' and 'a' to 'f'.
+
 ### Model
 9 1D conv layers and input sample size of 59049 (~3 seconds) 
 
