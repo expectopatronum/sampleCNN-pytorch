@@ -15,14 +15,16 @@ def save_audio_to_npy(rawfilepath, npyfilepath):
     Return :
         None 
     '''
-    
+
+    import os.path
+
     # make directory if not existing 
     if not os.path.exists(npyfilepath):
         os.makedirs(npyfilepath)
 
 
     mydir = [path for path in os.listdir(rawfilepath) if path >= '0' and path <= 'f']
-    for path in mydir : 
+    for path in mydir:
         # create directory with names '0' to 'f' if it doesn't already exist
         try:
             os.mkdir(Path(npyfilepath) / path)
@@ -30,10 +32,11 @@ def save_audio_to_npy(rawfilepath, npyfilepath):
             if e.errno != errno.EEXIST:
                 raise
         audios = [audio for audio in os.listdir(Path(rawfilepath) / path) if audio.split(".")[-1] == 'mp3']
-        for audio in audios :
+        for audio in audios:
             try:
-                y,sr = librosa.load(audio, sr=config.SR)
-                if len(y)/self.NUM_SAMPLES < 10:
+                audio_path = os.path.join(rawfilepath, path, audio)
+                y,sr = librosa.load(audio_path, sr=config.SR)
+                if len(y)/config.NUM_SAMPLES < 10:
                     print ("There are less than 10 segments in this audio")
             except:
                 print ("Cannot load audio {}".format(audio))
