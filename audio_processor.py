@@ -33,17 +33,22 @@ def save_audio_to_npy(rawfilepath, npyfilepath):
                 raise
         audios = [audio for audio in os.listdir(Path(rawfilepath) / path) if audio.split(".")[-1] == 'mp3']
         for audio in audios:
+            fn = audio.split(".")[0]
+            out_path = Path(npyfilepath) / (path + '/' + fn + '.npy')
+            if os.path.exists(out_path):
+                continue  # skip existing files to save time
+
             try:
                 audio_path = os.path.join(rawfilepath, path, audio)
                 y,sr = librosa.load(audio_path, sr=config.SR)
                 if len(y)/config.NUM_SAMPLES < 10:
-                    print ("There are less than 10 segments in this audio")
+                    print("There are less than 10 segments in this audio")
+                    #continue
             except:
-                print ("Cannot load audio {}".format(audio))
+                print("Cannot load audio {}".format(audio))
                 continue
 
-            fn = audio.split(".")[0]
-            np.save(Path(npyfilepath) / (path + '/' + fn + '.npy'), y)
+            np.save(out_path, y)
 
 
 def get_segment_from_npy(npyfile, segment_idx):

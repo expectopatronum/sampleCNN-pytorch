@@ -106,7 +106,6 @@ class Solver(object):
                     
                     print ("Retrieval : AROC = %.3f, AP = %.3f / "%(np.mean(auc1), np.mean(ap1)), "Annotation : AROC = %.3f, AP = %.3f"%(np.mean(auc2), np.mean(ap2)))
 
-
             self.curr_epoch +=1
 
             print ("Retrieval : Average AROC = %.3f, AP = %.3f / "%(np.mean(avg_auc1), np.mean(avg_ap1)), "Annotation :Average AROC = %.3f, AP = %.3f"%(np.mean(avg_auc2), np.mean(avg_ap2)))
@@ -121,11 +120,11 @@ class Solver(object):
                 break
 
         torch.save(self.samplecnn.module.state_dict(), self.model_savepath / self.samplecnn.module.__class__.__name__ + '_' + str(self.curr_epoch) + '.pth')
-                
 
-    # Validate the network on the val_loader (during training) or test_loader (for checking result)
-    # During training use this function for validation data.
-    def eval():
+
+    def eval(self):
+        # Validate the network on the val_loader (during training) or test_loader (for checking result)
+        # During training use this function for validation data.
         self.set_mode('valid')
         
         eval_loss = 0.0
@@ -140,10 +139,10 @@ class Solver(object):
             outputs = self.samplecnn(audio)
             loss = self.bce(outputs, label)
             
-            auc1, aprec1 = utils.tagwise_aroc_ap(label.cpu().detach().numpy(), outputs.cpu().detach.numpy())
+            auc1, aprec1 = utils.tagwise_aroc_ap(label.cpu().detach().numpy(), outputs.cpu().detach().numpy())
             avg_auc1.append(np.mean(auc1))
             avg_ap1.append(np.mean(aprec1))
-            auc2, aprec2 = utils.itemwise_aroc_ap(label.cpu().detach.numpy(), outputs.cpu().detach.numpy())
+            auc2, aprec2 = utils.itemwise_aroc_ap(label.cpu().detach.numpy(), outputs.cpu().detach().numpy())
             avg_auc2.append(np.mean(auc2))
             avg_ap2.append(np.mean(aprec2))
 
