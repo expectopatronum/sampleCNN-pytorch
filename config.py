@@ -1,9 +1,9 @@
-DATA_DIR = '/run/media/verena/SAMSUNG/Data/MagnaTagATune/'
-BASE_DIR = '/run/media/verena/SAMSUNG/Data/MagnaTagATune/sampleCNN-data/'  # data dir for this model
-MTT_DIR = '/run/media/verena/SAMSUNG/Data/MagnaTagATune/mp3/'  # MTT data dir
-AUDIO_DIR = '/run/media/verena/SAMSUNG/Data/MagnaTagATune/mp3_to_npy/'
-ANNOT_FILE = '/run/media/verena/SAMSUNG/Data/MagnaTagATune/annotations_final.csv'
-LIST_OF_TAGS = '/run/media/verena/SAMSUNG/Data/MagnaTagATune/sampleCNN-data/50_tags.txt'
+DATA_DIR = '/home/verena/data/MagnaTagATune/'
+BASE_DIR = '/home/verena/data/MagnaTagATune/sampleCNN-data/'  # data dir for this model
+MTT_DIR = '/home/verena/data/MagnaTagATune/mp3/'  # MTT data dir
+AUDIO_DIR = '/home/verena/data/MagnaTagATune/mp3_to_npy/'
+ANNOT_FILE = '/home/verena/data/MagnaTagATune/annotations_final.csv'
+LIST_OF_TAGS = '/home/verena/data/MagnaTagATune/sampleCNN-data/50_tags.txt'
 
 DEVICE_IDS=[0,1]
 
