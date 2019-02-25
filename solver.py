@@ -7,6 +7,7 @@ from torch.utils.data import DataLoader
 from torch.optim import lr_scheduler
 import utils
 import config
+from model import SampleCNN
 
 cuda = torch.cuda.is_available()
 kwargs = {'num_workers':1, 'pin_memory':True} if cuda else {}
@@ -119,7 +120,7 @@ class Solver(object):
                 print ("Early stopping")
                 break
 
-        torch.save(self.samplecnn.module.state_dict(), self.model_savepath / self.samplecnn.module.__class__.__name__ + '_' + str(self.curr_epoch) + '.pth')
+        torch.save(self.samplecnn.state_dict(), self.model_savepath / self.samplecnn.__class__.__name__ + '_' + str(self.curr_epoch) + '.pth')
 
 
     def eval(self):
@@ -142,13 +143,13 @@ class Solver(object):
             auc1, aprec1 = utils.tagwise_aroc_ap(label.cpu().detach().numpy(), outputs.cpu().detach().numpy())
             avg_auc1.append(np.mean(auc1))
             avg_ap1.append(np.mean(aprec1))
-            auc2, aprec2 = utils.itemwise_aroc_ap(label.cpu().detach.numpy(), outputs.cpu().detach().numpy())
+            auc2, aprec2 = utils.itemwise_aroc_ap(label.cpu().detach().numpy(), outputs.cpu().detach().numpy())
             avg_auc2.append(np.mean(auc2))
             avg_ap2.append(np.mean(aprec2))
 
-            eval_loss += loss.data[0]
+            eval_loss += loss.item()  # loss.data[0]
 
-        avg_loss =eval_loss/len(val_loader)
+        avg_loss = eval_loss/len(self.dataloader)
         print ("Retrieval : Average AROC = %.3f, AP = %.3f / "%(np.mean(avg_auc1), np.mean(avg_ap1)), "Annotation : Average AROC = %.3f, AP = %.3f"%(np.mean(avg_auc2), np.mean(avg_ap2)))
         print ('Average loss: {:.4f} \n'. format(avg_loss))
         return avg_loss
