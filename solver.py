@@ -113,14 +113,14 @@ class Solver(object):
             print ('Evaluating...')
             eval_loss = self.eval()
                 
-            self.scheduler.step(eval_loss) # use the learning rate scheduler
+            self.scheduler.step(eval_loss)  # use the learning rate scheduler
             curr_lr = self.optimizer.param_groups[0]['lr']
             print ('Learning rate : {}'.format(curr_lr))
             if curr_lr < 1e-7:
                 print ("Early stopping")
                 break
 
-        torch.save(self.samplecnn.state_dict(), self.model_savepath / self.samplecnn.__class__.__name__ + '_' + str(self.curr_epoch) + '.pth')
+        torch.save(self.samplecnn.state_dict(), os.path.join(self.model_savepath, self.samplecnn.__class__.__name__ + '_' + str(self.curr_epoch) + '.pth'))
 
 
     def eval(self):
