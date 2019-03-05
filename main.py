@@ -7,6 +7,8 @@ from solver import Solver
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--gpus', nargs='+', type=int, default=[])
+parser.add_argument('--train', action='store_true')
+parser.add_argument('--test', action='store_true')
 args = parser.parse_args()
 
 print("gpu devices being used: ", args.gpus)
@@ -14,19 +16,24 @@ print("gpu devices being used: ", args.gpus)
 
 def main():
     
-    dataset = SampleLevelMTTDataset()
-    samplecnn = model.SampleCNN()
+    if args.train or args.test:
+        dataset = SampleLevelMTTDataset()
+        samplecnn = model.SampleCNN()
+        mysolver = Solver(samplecnn, dataset, args)
+    else:
+        print("Nothing to be done...")
 
-    # start training
-    print("Start training!!")
-    mysolver = Solver(samplecnn, dataset, args)
-    mysolver.train()
-    
-    print("Finished! Hopefully..")
+    if args.train:
+        # start training
+        print("Start training!!")
+        mysolver.train()
+        print("Finished! Hopefully..")
 
-    # test it
-    print("Start testing...")
-    
+    if args.test:
+        # test it
+        print("Start testing...")
+        mysolver.eval('test')
+
 
 if __name__ == '__main__':
     main()

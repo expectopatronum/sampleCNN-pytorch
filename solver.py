@@ -61,7 +61,7 @@ class Solver(object):
             self.samplecnn.train()
             self.dataset.set_mode('train')
 
-        elif mode == 'valid' :
+        elif mode == 'valid':
             self.samplecnn.eval()
             self.dataset.set_mode('valid')
 
@@ -111,7 +111,7 @@ class Solver(object):
 
             print ("Retrieval : Average AROC = %.3f, AP = %.3f / "%(np.mean(avg_auc1), np.mean(avg_ap1)), "Annotation :Average AROC = %.3f, AP = %.3f"%(np.mean(avg_auc2), np.mean(avg_ap2)))
             print ('Evaluating...')
-            eval_loss = self.eval()
+            eval_loss = self.eval('valid')
                 
             self.scheduler.step(eval_loss)  # use the learning rate scheduler
             curr_lr = self.optimizer.param_groups[0]['lr']
@@ -123,10 +123,10 @@ class Solver(object):
         torch.save(self.samplecnn.state_dict(), os.path.join(self.model_savepath, self.samplecnn.__class__.__name__ + '_' + str(self.curr_epoch) + '.pth'))
 
 
-    def eval(self):
+    def eval(self, mode):
         # Validate the network on the val_loader (during training) or test_loader (for checking result)
         # During training use this function for validation data.
-        self.set_mode('valid')
+        self.set_mode(mode)
         
         eval_loss = 0.0
         avg_auc1 = []
